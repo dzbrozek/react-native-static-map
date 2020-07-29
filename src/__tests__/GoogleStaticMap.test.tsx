@@ -1,0 +1,273 @@
+import React from 'react';
+import { render } from '@testing-library/react-native';
+
+import GoogleStaticMap, { MAP_ENDPOINT } from '../GoogleStaticMap';
+
+describe('<GoogleStaticMap />', () => {
+  let apiKey: string;
+
+  beforeEach(() => {
+    apiKey = 'TEST_KEY';
+  });
+
+  describe('fail to render', () => {
+    it('should fail to render without zoom', () => {
+      const renderComponent = () =>
+        render(
+          <GoogleStaticMap
+            accessibilityRole="image"
+            apiKey={apiKey}
+            center={{
+              latitude: 51.477222,
+              longitude: 0,
+            }}
+            size={{
+              width: 400,
+              height: 300,
+            }}
+          />
+        );
+      expect(renderComponent).toThrowError(
+        `"zoom" is required without markers`
+      );
+    });
+
+    it('should fail to render without center', () => {
+      const renderComponent = () =>
+        render(
+          <GoogleStaticMap
+            accessibilityRole="image"
+            apiKey={apiKey}
+            zoom={14}
+            size={{
+              width: 400,
+              height: 300,
+            }}
+          />
+        );
+
+      expect(renderComponent).toThrowError(
+        `"center" is required without markers`
+      );
+    });
+  });
+
+  describe('should render map', () => {
+    it('should use latitudes and longitudes as center', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          zoom={14}
+          center={{
+            latitude: 51.477222,
+            longitude: 0,
+          }}
+          size={{
+            width: 400,
+            height: 300,
+          }}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=51.477222%2C0&key=${apiKey}&size=400x300&zoom=14`,
+      });
+    });
+
+    it('should use address as center', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          zoom={14}
+          center="Berkeley,CA"
+          size={{
+            width: 400,
+            height: 300,
+          }}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=Berkeley%2CCA&key=${apiKey}&size=400x300&zoom=14`,
+      });
+    });
+
+    it('should use custom scale', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          scale={2}
+          zoom={14}
+          center="Berkeley,CA"
+          size={{
+            width: 100,
+            height: 100,
+          }}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=Berkeley%2CCA&key=${apiKey}&scale=2&size=100x100&zoom=14`,
+      });
+    });
+
+    it('should use custom image format', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          zoom={14}
+          format="gif"
+          center="Berkeley,CA"
+          size={{
+            width: 100,
+            height: 100,
+          }}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=Berkeley%2CCA&format=gif&key=${apiKey}&size=100x100&zoom=14`,
+      });
+    });
+
+    it('should use custom map type', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          zoom={14}
+          mapType="hybrid"
+          center="Berkeley,CA"
+          size={{
+            width: 400,
+            height: 400,
+          }}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=Berkeley%2CCA&key=${apiKey}&maptype=hybrid&size=400x400&zoom=14`,
+      });
+    });
+
+    it('should use map type', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          mapType="hybrid"
+          center="Berkeley,CA"
+          zoom={14}
+          size={{
+            width: 400,
+            height: 400,
+          }}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=Berkeley%2CCA&key=${apiKey}&maptype=hybrid&size=400x400&zoom=14`,
+      });
+    });
+
+    it('should show multiple markers with the same style', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          size={{
+            width: 400,
+            height: 400,
+          }}
+          markers={[
+            {
+              color: 'blue',
+              label: 'S',
+              locations: [
+                {
+                  latitude: 64.05,
+                  longitude: -145.36,
+                },
+                'Delta Junction, AK',
+              ],
+            },
+          ]}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?key=${apiKey}&markers=color%3Ablue%7Clabel%3AS%7C64.05%2C-145.36%7CDelta%20Junction%2C%20AK&size=400x400`,
+      });
+    });
+
+    it('should show multiple markers with different style', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          size={{
+            width: 400,
+            height: 400,
+          }}
+          markers={[
+            {
+              color: 'blue',
+              label: 'B',
+              size: 'small',
+              locations: [
+                {
+                  latitude: 64.05,
+                  longitude: -145.36,
+                },
+              ],
+            },
+            {
+              color: 'red',
+              label: 'R',
+              size: 'mid',
+              locations: ['Delta Junction, AK'],
+            },
+          ]}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?key=${apiKey}&markers=size%3Asmall%7Ccolor%3Ablue%7Clabel%3AB%7C64.05%2C-145.36&markers=size%3Amid%7Ccolor%3Ared%7Clabel%3AR%7CDelta%20Junction%2C%20AK&size=400x400`,
+      });
+    });
+
+    it('should use custom markers', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          size={{
+            width: 400,
+            height: 400,
+          }}
+          markers={[
+            {
+              anchor: [32, 10],
+              icon: 'https://goo.gl/5y3S82',
+              locations: ['Canberra ACT'],
+            },
+            {
+              anchor: 'topleft',
+              icon: 'http://tinyurl.com/jrhlvu6',
+              locations: ['Melbourne VIC'],
+            },
+            {
+              icon: 'https://goo.gl/1oTJ9Y',
+              scale: 2,
+              locations: [
+                {
+                  latitude: -33.865143,
+                  longitude: 151.2099,
+                },
+              ],
+            },
+          ]}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?key=${apiKey}&markers=anchor%3A32%2C10%7Cicon%3Ahttps%3A%2F%2Fgoo.gl%2F5y3S82%7CCanberra%20ACT&markers=anchor%3Atopleft%7Cicon%3Ahttp%3A%2F%2Ftinyurl.com%2Fjrhlvu6%7CMelbourne%20VIC&markers=scale%3A2%7Cicon%3Ahttps%3A%2F%2Fgoo.gl%2F1oTJ9Y%7C-33.865143%2C151.2099&size=400x400`,
+      });
+    });
+  });
+});
