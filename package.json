@@ -1,6 +1,6 @@
 {
   "name": "@dazik/react-native-static-map",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React Native wrapper for Google Maps Static API",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -99,7 +99,7 @@
       "publish": true
     },
     "github": {
-      "release": true
+      "release": false
     },
     "plugins": {
       "@release-it/conventional-changelog": {
