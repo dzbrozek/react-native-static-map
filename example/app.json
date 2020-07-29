@@ -1,0 +1,22 @@
+{
+  "name": "react-native-static-map-example",
+  "displayName": "StaticMap Example",
+  "expo": {
+    "name": "react-native-static-map-example",
+    "slug": "react-native-static-map-example",
+    "description": "Example app for react-native-static-map",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
