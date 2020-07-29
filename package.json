@@ -34,7 +34,10 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/dzbrozek/react-native-static-map",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzbrozek/react-native-static-map.git"
+  },
   "author": "Dazik <damianzbrozek@hotmail.com> (https://github.com/dzbrozek)",
   "license": "MIT",
   "bugs": {
@@ -144,5 +147,9 @@
   },
   "dependencies": {
     "query-string": "^6.13.1"
+  },
+  "directories": {
+    "example": "example",
+    "lib": "lib"
   }
 }
