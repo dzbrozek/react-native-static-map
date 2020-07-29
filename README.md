@@ -5,11 +5,11 @@ React Native wrapper for Google Maps Static API
 ## Installation
 
 ```sh
-npm install react-native-static-map
+npm install @dazik/react-native-static-map
 ```
 
 ```sh
-yarn add react-native-static-map
+yarn add @dazik/react-native-static-map
 ```
 
 ## Example
@@ -17,7 +17,7 @@ yarn add react-native-static-map
 ### Simple map
 
 ```js
-import GoogleStaticMap from "react-native-static-map";
+import GoogleStaticMap from "@dazik/react-native-static-map";
 
 const styles = StyleSheet.create({
   map: {

@@ -8,7 +8,7 @@ import {
   Text,
   SafeAreaView,
 } from 'react-native';
-import GoogleStaticMap from 'react-native-static-map';
+import GoogleStaticMap from '@dazik/react-native-static-map';
 import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
