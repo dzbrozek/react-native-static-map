@@ -269,5 +269,44 @@ describe('<GoogleStaticMap />', () => {
         uri: `${MAP_ENDPOINT}?key=${apiKey}&markers=anchor%3A32%2C10%7Cicon%3Ahttps%3A%2F%2Fgoo.gl%2F5y3S82%7CCanberra%20ACT&markers=anchor%3Atopleft%7Cicon%3Ahttp%3A%2F%2Ftinyurl.com%2Fjrhlvu6%7CMelbourne%20VIC&markers=scale%3A2%7Cicon%3Ahttps%3A%2F%2Fgoo.gl%2F1oTJ9Y%7C-33.865143%2C151.2099&size=400x400`,
       });
     });
+
+    it('should use custom styles', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          zoom={15}
+          center="Brooklyn"
+          size={{
+            width: 400,
+            height: 300,
+          }}
+          mapStyles={[
+            {
+              feature: 'road.local',
+              element: 'geometry',
+              color: '0x00ff00',
+            },
+            {
+              feature: 'landscape',
+              element: 'geometry.fill',
+              color: '0x000000',
+            },
+            {
+              element: 'labels',
+              invert_lightness: true,
+            },
+            {
+              feature: 'road.arterial',
+              element: 'labels',
+              invert_lightness: false,
+            },
+          ]}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=Brooklyn&key=${apiKey}&size=400x300&style=feature%3Aroad.local%7Celement%3Ageometry%7Ccolor%3A0x00ff00&style=feature%3Alandscape%7Celement%3Ageometry.fill%7Ccolor%3A0x000000&style=element%3Alabels%7Cinvert_lightness%3Atrue&style=feature%3Aroad.arterial%7Celement%3Alabels%7Cinvert_lightness%3Afalse&zoom=15`,
+      });
+    });
   });
 });

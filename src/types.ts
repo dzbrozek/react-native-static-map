@@ -39,6 +39,8 @@ export interface Marker {
   anchor?: Anchor;
 }
 
+export type MapStyle = Record<string, string | number | boolean>;
+
 export type GoogleStaticMapProps = Omit<ImageProps, 'source'> & {
   apiKey: string;
   signature?: string;
@@ -51,5 +53,6 @@ export type GoogleStaticMapProps = Omit<ImageProps, 'source'> & {
   language?: string;
   region?: string;
   markers?: Marker[];
+  mapStyles?: MapStyle[];
   ImageComponent?: React.ComponentType<ImageProps>;
 };

@@ -71,6 +71,42 @@ const styles = StyleSheet.create({
 />
 ```
 
+### Map with custom style
+
+```js
+<GoogleStaticMap
+  size={{
+    height: 300,
+    width: 200
+  }}
+  style={styles.map}
+  apiKey="API_KEY"
+  zoom={15}
+  center="Brooklyn"
+  mapStyles={[
+    {
+      feature: 'road.local',
+      element: 'geometry',
+      color: '0x00ff00'
+    },
+    {
+      feature: 'landscape',
+      element: 'geometry.fill',
+      color: '0x000000'
+    },
+    {
+      element: 'labels',
+      invert_lightness: true
+    },
+    {
+      feature: 'road.arterial',
+      element: 'labels',
+      invert_lightness: false
+    }
+  ]}
+/>
+```
+
 ## Props
 
 Accepts all props from [Image](http://reactnative.dev/docs/image.html#props) except for `source`.
@@ -88,6 +124,7 @@ Accepts all props from [Image](http://reactnative.dev/docs/image.html#props) exc
 |**`language`**       |`no`                          | defines the language to use for display of labels on map tiles |
 |**`region`**         |`no`                          | defines the appropriate borders to display, based on geo-political sensitivities |
 |**`markers`**        |`no`                          | defines one or more markers to attach to the image at specified locations |
+|**`mapStyles`**      |`no`                          | defines one or more styles customizing the presentation of the standard map. Each style may contain `feature`, `element` and set of style rules. Read more about available [options](https://developers.google.com/maps/documentation/maps-static/styling)
 |**`ImageComponent`** |`no`                          | defines component used to display map. Default `Image`
 
 To learn more about props visit [official documentation](https://developers.google.com/maps/documentation/maps-static/start).

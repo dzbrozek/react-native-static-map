@@ -8,6 +8,7 @@ import type {
   LatLng,
   Marker,
   MarkerLocation,
+  MapStyle,
 } from './types';
 
 export const MAP_ENDPOINT = 'https://maps.googleapis.com/maps/api/staticmap';
@@ -24,7 +25,9 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
   language,
   region,
   markers = [],
+  mapStyles = [],
   ImageComponent = Image,
+  children,
   ...props
 }) => {
   const formatCenter = (centerValue: string | LatLng): string => {
@@ -78,6 +81,19 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
       }
     );
   };
+
+  const formatMapStyles = (styles: MapStyle[]): string[] => {
+    return styles.map(({ feature, element, ...rules }): string => {
+      return [
+        feature ? `feature:${feature}` : feature,
+        element ? `element:${element}` : element,
+        ...Object.entries(rules).map(([key, value]) => `${key}:${value}`),
+      ]
+        .filter(Boolean)
+        .join('|');
+    });
+  };
+
   const hasMarkers = !!markers.length;
 
   if (!hasMarkers) {
@@ -101,6 +117,7 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
     language,
     region,
     markers: formatMarkers(markers),
+    style: formatMapStyles(mapStyles),
   };
 
   const imageURL = queryString.stringifyUrl(
@@ -119,7 +136,9 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
       source={{
         uri: imageURL,
       }}
-    />
+    >
+      {children}
+    </ImageComponent>
   );
 };
 
