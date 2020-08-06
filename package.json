@@ -32,13 +32,14 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "maps-static-api"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dzbrozek/react-native-static-map.git"
   },
-  "author": "Dazik <damianzbrozek@hotmail.com> (https://github.com/dzbrozek)",
+  "author": "Dazik (https://github.com/dzbrozek)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dzbrozek/react-native-static-map/issues"
