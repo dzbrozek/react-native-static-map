@@ -27,19 +27,28 @@ export type Anchor =
   | 'bottomleft'
   | 'bottomright';
 
-export type MarkerLocation = string | LatLng;
+export type Location = string | LatLng;
 
 export interface Marker {
   size?: 'tiny' | 'mid' | 'small';
   color?: string;
   label?: string;
   scale?: 1 | 2 | 4;
-  locations?: MarkerLocation[];
+  locations?: Location[];
   icon?: string;
   anchor?: Anchor;
 }
 
 export type MapStyle = Record<string, string | number | boolean>;
+
+export interface Path {
+  weight?: number;
+  color?: string;
+  fillcolor?: string;
+  geodesic?: boolean;
+  enc?: string;
+  points?: Location[];
+}
 
 export type GoogleStaticMapProps = Omit<ImageProps, 'source'> & {
   apiKey: string;
@@ -55,5 +64,6 @@ export type GoogleStaticMapProps = Omit<ImageProps, 'source'> & {
   markers?: Marker[];
   mapStyles?: MapStyle[];
   visible?: string[];
+  paths?: Path[];
   ImageComponent?: React.ComponentType<ImageProps>;
 };

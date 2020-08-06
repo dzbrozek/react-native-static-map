@@ -7,8 +7,9 @@ import type {
   GoogleStaticMapProps,
   LatLng,
   Marker,
-  MarkerLocation,
+  Location,
   MapStyle,
+  Path,
 } from './types';
 
 export const MAP_ENDPOINT = 'https://maps.googleapis.com/maps/api/staticmap';
@@ -26,7 +27,8 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
   region,
   markers = [],
   mapStyles = [],
-  visible = [],
+  visible,
+  paths = [],
   ImageComponent = Image,
   children,
   ...props
@@ -48,7 +50,7 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
     return `anchor:${anchor}`;
   };
 
-  const formatMarkerLocations = (locations: MarkerLocation[]): string[] => {
+  const formatLocations = (locations: Location[]): string[] => {
     return locations.map((location) => {
       if (typeof location === 'string') {
         return location;
@@ -57,8 +59,8 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
     });
   };
 
-  const formatMarkers = (marker: Marker[]): string[] => {
-    return marker.map(
+  const formatMarkers = (mapMarkers: Marker[]): string[] => {
+    return mapMarkers.map(
       ({
         size: markerSize,
         color: markerColor,
@@ -75,7 +77,24 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
           markerScale ? `scale:${markerScale}` : markerScale,
           formatMarkerAnchor(markerAnchor),
           markerIcon ? `icon:${markerIcon}` : markerIcon,
-          ...formatMarkerLocations(markerLocations),
+          ...formatLocations(markerLocations),
+        ]
+          .filter(Boolean)
+          .join('|');
+      }
+    );
+  };
+
+  const formatPaths = (mapPaths: Path[]): string[] => {
+    return mapPaths.map(
+      ({ weight, color, fillcolor, geodesic, enc, points = [] }): string => {
+        return [
+          weight ? `weight:${weight}` : weight,
+          color ? `color:${color}` : color,
+          fillcolor ? `fillcolor:${fillcolor}` : fillcolor,
+          geodesic ? `geodesic:${geodesic}` : geodesic,
+          enc ? `enc:${enc}` : enc,
+          ...formatLocations(points),
         ]
           .filter(Boolean)
           .join('|');
@@ -95,14 +114,14 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
     });
   };
 
-  const hasMarkers = !!markers.length;
+  const requireCenterAndZoom = !markers.length && !paths.length;
 
-  if (!hasMarkers) {
+  if (requireCenterAndZoom) {
     if (center === undefined) {
-      throw new Error(`"center" is required without markers`);
+      throw new Error(`"center" is required without markers or paths`);
     }
     if (zoom === undefined) {
-      throw new Error(`"zoom" is required without markers`);
+      throw new Error(`"zoom" is required without markers or paths`);
     }
   }
 
@@ -119,7 +138,8 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
     region,
     markers: formatMarkers(markers),
     style: formatMapStyles(mapStyles),
-    visible: visible.join('|'),
+    path: formatPaths(paths),
+    visible: visible ? visible.join('|') : visible,
   };
 
   const imageURL = queryString.stringifyUrl(

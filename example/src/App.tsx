@@ -207,6 +207,49 @@ export default function App() {
             mapStyles={mapStyles}
           />
         </View>
+
+        <View style={styles.box}>
+          <Text style={styles.label}>Map with path</Text>
+          <GoogleStaticMap
+            size={{
+              height: 300,
+              width: Dimensions.get('window').width,
+            }}
+            apiKey={apiKey}
+            style={styles.map}
+            paths={[
+              {
+                color: '0x0000ff',
+                weight: 5,
+                points: [
+                  {
+                    latitude: 40.737102,
+                    longitude: -73.990318,
+                  },
+                  {
+                    latitude: 40.749825,
+                    longitude: -73.987963,
+                  },
+                  {
+                    latitude: 40.752946,
+                    longitude: -73.987384,
+                  },
+                ],
+              },
+              {
+                color: '0x00000000',
+                weight: 5,
+                fillcolor: '0xFFFF0033',
+                points: [
+                  '8th Avenue & 34th St,New York,NY',
+                  '8th Avenue & 42nd St,New+York,NY',
+                  'Park Ave & 42nd St,New York,NY,NY',
+                  'Park Ave & 34th St,New York,NY,NY',
+                ],
+              },
+            ]}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

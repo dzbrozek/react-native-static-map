@@ -330,7 +330,35 @@ describe('<GoogleStaticMap />', () => {
         />
       );
       expect(getByRole('image').getProp('source')).toEqual({
-        uri: `${MAP_ENDPOINT}?center=51.477222%2C0&key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo&size=400x300&visible=77%20Massachusetts%20Ave%2C%20Cambridge%2C%20MA%7CHarvard%20Square%2C%20Cambridge%2C%20MA&zoom=14`,
+        uri: `${MAP_ENDPOINT}?center=51.477222%2C0&key=${apiKey}&size=400x300&visible=77%20Massachusetts%20Ave%2C%20Cambridge%2C%20MA%7CHarvard%20Square%2C%20Cambridge%2C%20MA&zoom=14`,
+      });
+    });
+
+    it('should use paths', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          size={{
+            width: 400,
+            height: 300,
+          }}
+          paths={[
+            {
+              color: '0x0000ff',
+              weight: 5,
+              points: [
+                { latitude: 40.737102, longitude: -73.990318 },
+                { latitude: 40.749825, longitude: -73.987963 },
+                { latitude: 40.752946, longitude: -73.987384 },
+                { latitude: 40.755823, longitude: -73.986397 },
+              ],
+            },
+          ]}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?key=${apiKey}&path=weight%3A5%7Ccolor%3A0x0000ff%7C40.737102%2C-73.990318%7C40.749825%2C-73.987963%7C40.752946%2C-73.987384%7C40.755823%2C-73.986397&size=400x300`,
       });
     });
   });
