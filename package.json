@@ -98,9 +98,6 @@
     "npm": {
       "publish": true
     },
-    "github": {
-      "release": false
-    },
     "plugins": {
       "@release-it/conventional-changelog": {
         "preset": "angular"

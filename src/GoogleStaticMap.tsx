@@ -26,6 +26,7 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
   region,
   markers = [],
   mapStyles = [],
+  visible = [],
   ImageComponent = Image,
   children,
   ...props
@@ -118,6 +119,7 @@ const GoogleStaticMap: React.FunctionComponent<GoogleStaticMapProps> = ({
     region,
     markers: formatMarkers(markers),
     style: formatMapStyles(mapStyles),
+    visible: visible.join('|'),
   };
 
   const imageURL = queryString.stringifyUrl(

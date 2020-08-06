@@ -125,9 +125,9 @@ Accepts all props from [Image](http://reactnative.dev/docs/image.html#props) exc
 |**`region`**         |`no`                          | defines the appropriate borders to display, based on geo-political sensitivities |
 |**`markers`**        |`no`                          | defines one or more markers to attach to the image at specified locations |
 |**`mapStyles`**      |`no`                          | defines one or more styles customizing the presentation of the standard map. Each style may contain `feature`, `element` and set of style rules. Read more about available [options](https://developers.google.com/maps/documentation/maps-static/styling)
+|**`visible`**        |`no`                          | defines one or more locations that should remain visible on the map, though no markers or other indicators will be displayed
 |**`ImageComponent`** |`no`                          | defines component used to display map. Default `Image`
 
-To learn more about props visit [official documentation](https://developers.google.com/maps/documentation/maps-static/start).
 
 ### Marker
 
@@ -141,6 +141,8 @@ To learn more about props visit [official documentation](https://developers.goog
 |**`icon`**       |`no`                          | custom icon URL |
 |**`anchor`**     |`no`                          | anchor point for the custom icon. Can be array representing `[x, y]` point of the icon (such as `[10, 5]`), or as a predefined alignment: `top`, `bottom`, `left`, `right`, `center`, `topleft`, `topright`, `bottomleft` and `bottomright`
 
+
+To learn more about props visit [official documentation](https://developers.google.com/maps/documentation/maps-static/start).
 
 ## Example
 See the example in the `example` folder.

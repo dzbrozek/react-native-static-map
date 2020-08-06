@@ -54,5 +54,6 @@ export type GoogleStaticMapProps = Omit<ImageProps, 'source'> & {
   region?: string;
   markers?: Marker[];
   mapStyles?: MapStyle[];
+  visible?: string[];
   ImageComponent?: React.ComponentType<ImageProps>;
 };

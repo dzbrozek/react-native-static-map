@@ -308,5 +308,30 @@ describe('<GoogleStaticMap />', () => {
         uri: `${MAP_ENDPOINT}?center=Brooklyn&key=${apiKey}&size=400x300&style=feature%3Aroad.local%7Celement%3Ageometry%7Ccolor%3A0x00ff00&style=feature%3Alandscape%7Celement%3Ageometry.fill%7Ccolor%3A0x000000&style=element%3Alabels%7Cinvert_lightness%3Atrue&style=feature%3Aroad.arterial%7Celement%3Alabels%7Cinvert_lightness%3Afalse&zoom=15`,
       });
     });
+
+    it('should specify locations that should be visible', () => {
+      const { getByRole } = render(
+        <GoogleStaticMap
+          accessibilityRole="image"
+          apiKey={apiKey}
+          zoom={14}
+          center={{
+            latitude: 51.477222,
+            longitude: 0,
+          }}
+          size={{
+            width: 400,
+            height: 300,
+          }}
+          visible={[
+            '77 Massachusetts Ave, Cambridge, MA',
+            'Harvard Square, Cambridge, MA',
+          ]}
+        />
+      );
+      expect(getByRole('image').getProp('source')).toEqual({
+        uri: `${MAP_ENDPOINT}?center=51.477222%2C0&key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo&size=400x300&visible=77%20Massachusetts%20Ave%2C%20Cambridge%2C%20MA%7CHarvard%20Square%2C%20Cambridge%2C%20MA&zoom=14`,
+      });
+    });
   });
 });
